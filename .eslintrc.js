@@ -8,6 +8,8 @@ module.exports = {
         expect: 'readonly',
         describe: 'readonly',
         test: 'readonly',
+        HTMLFormElement: 'readonly',
+        HTMLInputElement: 'readonly',
     },
     parser: '@typescript-eslint/parser',
     plugins: ['@typescript-eslint'],

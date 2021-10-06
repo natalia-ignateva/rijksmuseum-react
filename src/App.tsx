@@ -1,7 +1,8 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import axios from 'axios';
-import { IRijksResponse } from './IRijksResponse';
+import { IRijksResponse } from './models/IRijksResponse';
 import './App.css';
+import ArtCollection from './components/ArtCollection';
 
 const App = () => {
     const [foundTerms, setFoundTerms] = useState<IRijksResponse>({
@@ -9,9 +10,9 @@ const App = () => {
     });
     const [inputText, setImputText] = useState<string>('');
 
-    const foundCollection = async (query: string): Promise<IRijksResponse> => {
+    const getCollection = async (query: string): Promise<IRijksResponse> => {
         const response = await axios.get<IRijksResponse>(
-            `https://www.rijksmuseum.nl/api/en/collection/?key=${process.env.REACT_APP_RIJKSMUSEUM_API_KEY}&q=${query}`,
+            `https://www.rijksmuseum.nl/api/en/collection/?key=${process.env.REACT_APP_RIJKSMUSEUM_API_KEY}&imgonly=true&q=${query}`,
         );
         return response.data;
     };
@@ -19,12 +20,12 @@ const App = () => {
     useEffect(() => {
         (async () => {
             const query = encodeURIComponent(inputText);
-            const response = await foundCollection(query);
+            const response = await getCollection(query);
             setFoundTerms(response);
         })();
     }, [inputText]);
 
-    const submitHandle = (event: FormEvent<HTMLFormElement>) => {
+    const submitHandle = (event: FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
         const form = event.target as HTMLFormElement;
         const input = form.querySelector('#searchText') as HTMLInputElement;
@@ -42,15 +43,8 @@ const App = () => {
                     type="text"
                     onChange={(event) => setImputText(event.target.value)}
                 />
-                <button type="submit">Search</button>
             </form>
-            <div>
-                {foundTerms.artObjects.map((artObject) => (
-                    <div key={artObject.id}>
-                        <p>{`${artObject.title}: ${artObject.principalOrFirstMaker}`}</p>
-                    </div>
-                ))}
-            </div>
+            <ArtCollection foundTerms={foundTerms.artObjects} />
         </div>
     );
 };
