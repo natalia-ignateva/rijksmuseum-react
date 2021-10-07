@@ -35,11 +35,11 @@ const App = () => {
 
     return (
         <div className="App">
-            <h1>Rijksmuseum</h1>
+            <h1>Rijksmuseum Art Collection</h1>
             <form className="searchForm" onSubmit={submitHandle}>
                 <input
                     id="searchText"
-                    placeholder="What is in your mind?"
+                    placeholder="ex. 'water'"
                     type="text"
                     onChange={(event) => setImputText(event.target.value)}
                 />

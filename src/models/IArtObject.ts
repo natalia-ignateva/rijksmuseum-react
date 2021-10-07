@@ -3,7 +3,7 @@ interface IWebImage {
 }
 
 export interface IArtObject {
-    id: string;
+    objectNumber: string;
     title: string;
     principalOrFirstMaker: string;
     webImage: IWebImage;

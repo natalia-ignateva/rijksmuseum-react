@@ -10,6 +10,7 @@ module.exports = {
         test: 'readonly',
         HTMLFormElement: 'readonly',
         HTMLInputElement: 'readonly',
+        HTMLDivElement: 'readonly',
     },
     parser: '@typescript-eslint/parser',
     plugins: ['@typescript-eslint'],
