@@ -6,9 +6,11 @@ const CollectionsPiece = (props: { artObject: IArtObject }) => {
     const { artObject } = props;
 
     const [isDisplayedModal, setIsDisplayedModal] = useState(false);
+    const [key, setKey] = useState('');
 
     const handleModal = (event: MouseEvent<HTMLDivElement>): void => {
         event.preventDefault();
+        setKey(artObject.objectNumber);
         setIsDisplayedModal(!isDisplayedModal);
     };
 
@@ -27,7 +29,7 @@ const CollectionsPiece = (props: { artObject: IArtObject }) => {
                     width="500"
                 />
                 <p>{`${artObject.title}: ${artObject.principalOrFirstMaker}`}</p>
-                {isDisplayedModal ? <CollectionsPieceModal /> : null}
+                {isDisplayedModal ? <CollectionsPieceModal id={key} /> : null}
             </div>
         </div>
     );
