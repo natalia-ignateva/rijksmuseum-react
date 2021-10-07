@@ -1,7 +1,7 @@
 import React from 'react';
-import './CollectionDetailsModal.css';
+import './CollectionsPieceModal.css';
 
-const CollectionDetailsModal = () => (
+const CollectionsPieceModal = () => (
     <div className="collectionModal">
         <div
             className="modal_content"
@@ -10,14 +10,12 @@ const CollectionDetailsModal = () => (
             role="button"
             tabIndex={0}
         >
-            <h2>Title</h2>
+            <h2>Tile</h2>
             <div className="modal_description">
-                <p>description</p>
-                <p>something else</p>
-                <p>image</p>
+                <p>safd</p>
             </div>
         </div>
     </div>
 );
 
-export default CollectionDetailsModal;
+export default CollectionsPieceModal;

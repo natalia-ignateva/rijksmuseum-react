@@ -1,6 +1,4 @@
-interface IWebImage {
-    url: string;
-}
+import { IWebImage } from './IWebImage';
 
 export interface IArtObject {
     objectNumber: string;
