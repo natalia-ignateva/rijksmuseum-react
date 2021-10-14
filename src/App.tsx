@@ -1,49 +1,53 @@
-import React, { useState, useEffect, FormEvent } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect, MouseEvent, FormEvent } from 'react';
+import { BsSearch } from 'react-icons/bs';
 import { IRijksResponse } from './models/IRijksResponse';
-import './App.css';
 import ArtCollection from './components/ArtCollection';
+import getCollection from './api';
+import './App.css';
 
 const App = () => {
     const [foundTerms, setFoundTerms] = useState<IRijksResponse>({
+        count: 0,
         artObjects: [],
     });
-    const [inputText, setImputText] = useState<string>('');
+    const [inputtedText, setInputText] = useState<string>('');
 
-    const getCollection = async (query: string): Promise<IRijksResponse> => {
-        const response = await axios.get<IRijksResponse>(
-            `https://www.rijksmuseum.nl/api/en/collection/?key=${process.env.REACT_APP_RIJKSMUSEUM_API_KEY}&imgonly=true&q=${query}`,
-        );
-        return response.data;
+    // request Rijksmuseum collection on submit or on click
+    const handleClick = async (
+        event: MouseEvent<SVGElement> | FormEvent<HTMLFormElement>,
+    ): Promise<void> => {
+        event.preventDefault();
+
+        // grab input to set a new value to query the search request
+        setInputText(inputtedText);
+
+        // await for API response to store found data in foundTerms
+        const query = encodeURIComponent(inputtedText);
+        const response = await getCollection(query);
+        setFoundTerms(response);
     };
 
+    // request initial data on page load with an empty query
     useEffect(() => {
         (async () => {
-            const query = encodeURIComponent(inputText);
-            const response = await getCollection(query);
+            const response = await getCollection('');
             setFoundTerms(response);
         })();
-    }, [inputText]);
-
-    const submitHandle = (event: FormEvent<HTMLFormElement>): void => {
-        event.preventDefault();
-        const form = event.target as HTMLFormElement;
-        const input = form.querySelector('#searchText') as HTMLInputElement;
-        setImputText(input.value);
-        input.value = '';
-    };
+    }, []);
 
     return (
         <div className="App">
             <h1>Rijksmuseum Art Collection</h1>
-            <form className="searchForm" onSubmit={submitHandle}>
+            <form className="searchForm" onSubmit={handleClick}>
                 <input
-                    id="searchText"
                     placeholder="ex. 'water'"
                     type="text"
-                    onChange={(event) => setImputText(event.target.value)}
+                    value={inputtedText}
+                    onChange={(e) => setInputText(e.target.value)}
                 />
+                <BsSearch onClick={handleClick} />
             </form>
+            <p>We found {foundTerms.count} works for you</p>
             <ArtCollection foundTerms={foundTerms.artObjects} />
         </div>
     );
